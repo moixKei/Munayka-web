@@ -1,0 +1,29 @@
+package com.munayka.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class TestController {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @GetMapping("/test-db")
+    public String testDatabase() {
+        try {
+            // Probar conexión a la base de datos
+            jdbcTemplate.execute("SELECT 1");
+            return "✅ CONEXIÓN EXITOSA - MySQL MUNAYKA funcionando!";
+        } catch (Exception e) {
+            return "❌ ERROR de conexión: " + e.getMessage();
+        }
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        return "🚀 Backend MUNAYKA activo - Listo para desarrollar!";
+    }
+}
