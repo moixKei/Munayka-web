@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -35,10 +36,10 @@ public class CartService {
         
         return cartRepository.findByUserWithItems(user)
                 .orElseGet(() -> {
-                    // Si no existe, creamos uno temporal (sin guardar aún)
-                    Cart newCart = new Cart();
-                    newCart.setUser(user);
-                    return newCart;
+                    Cart emptyCart = new Cart();
+                    emptyCart.setUser(user);
+                    emptyCart.setItems(new ArrayList<>());
+                    return emptyCart;
                 });
     }
     

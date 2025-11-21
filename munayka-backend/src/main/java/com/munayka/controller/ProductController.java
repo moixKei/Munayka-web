@@ -18,14 +18,12 @@ public class ProductController {
     
     @Autowired
     private ProductService productService;
-    
-    // GET - Obtener todos los productos
+
     @GetMapping
     public List<Product> getAll() {
         return productService.getAll();
     }
     
-    // GET - Obtener producto por ID
     @GetMapping("/{id}")
     public ResponseEntity<Product> getById(@PathVariable Long id) {
         Optional<Product> product = productService.getById(id);
@@ -33,25 +31,21 @@ public class ProductController {
                       .orElse(ResponseEntity.notFound().build());
     }
     
-    // GET - Obtener productos por categoría
     @GetMapping("/category/{category}")
     public List<Product> getByCategory(@PathVariable Category category) {
         return productService.getByCategory(category);
     }
     
-    // GET - Obtener productos con stock disponible
     @GetMapping("/available")
     public List<Product> getAvailable() {
         return productService.getAvailable();
     }
     
-    // GET - Buscar productos por nombre
     @GetMapping("/search")
     public List<Product> searchByName(@RequestParam String name) {
         return productService.findByName(name);
     }
     
-    // GET - Buscar por rango de precio
     @GetMapping("/price-range")
     public List<Product> searchByPriceRange(
             @RequestParam BigDecimal min, 
@@ -59,19 +53,16 @@ public class ProductController {
         return productService.findByPriceRange(min, max);
     }
     
-    // GET - Productos por categoría con stock disponible
     @GetMapping("/category/{category}/available")
     public List<Product> getByCategoryWithStock(@PathVariable Category category) {
         return productService.findByCategoryWithStock(category);
     }
     
-    // POST - Crear nuevo producto
     @PostMapping
     public Product createProduct(@RequestBody Product product) {
         return productService.save(product);
     }
     
-    // PUT - Actualizar producto
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(
             @PathVariable Long id, 
@@ -93,14 +84,12 @@ public class ProductController {
         return ResponseEntity.notFound().build();
     }
     
-    // DELETE - Eliminar producto
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
         productService.delete(id);
         return ResponseEntity.ok().build();
     }
     
-    // PATCH - Actualizar solo el stock
     @PatchMapping("/{id}/stock")
     public ResponseEntity<Product> updateStock(
             @PathVariable Long id, 
