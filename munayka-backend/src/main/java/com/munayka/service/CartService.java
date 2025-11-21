@@ -15,7 +15,7 @@ import java.util.Optional;
 @Transactional
 public class CartService {
     
-    @Autowired
+	@Autowired
     private CartRepository cartRepository;
     
     @Autowired
@@ -27,24 +27,22 @@ public class CartService {
     @Autowired
     private ProductRepository productRepository;
     
-    // Obtener carrito por usuario
+    // Obtener carrito por usuario - SOLO LECTURA
     @Transactional(readOnly = true)
     public Cart getCartByUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
         
         return cartRepository.findByUserWithItems(user)
-                .orElseGet(() -> createCart(user));
+                .orElseGet(() -> {
+                    // Si no existe, creamos uno temporal (sin guardar aún)
+                    Cart newCart = new Cart();
+                    newCart.setUser(user);
+                    return newCart;
+                });
     }
     
-    // Crear carrito para usuario
-    private Cart createCart(User user) {
-        Cart cart = new Cart();
-        cart.setUser(user);
-        return cartRepository.save(cart);
-    }
-    
-    // Agregar producto al carrito
+    // Agregar producto al carrito - ESCRITURA
     public Cart addToCart(Long userId, Long productId, Integer quantity) {
         if (quantity <= 0) {
             throw new RuntimeException("Quantity must be greater than 0");
@@ -62,7 +60,11 @@ public class CartService {
         }
         
         Cart cart = cartRepository.findByUser(user)
-                .orElseGet(() -> createCart(user));
+                .orElseGet(() -> {
+                    Cart newCart = new Cart();
+                    newCart.setUser(user);
+                    return cartRepository.save(newCart);
+                });
         
         // Buscar si el producto ya está en el carrito
         Optional<CartItem> existingItem = cartItemRepository.findByCartAndProduct(cart, product);
