@@ -11,7 +11,6 @@ import java.util.List;
 @Table(name = "orders")
 @Data
 public class Order {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -42,7 +41,6 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> items = new ArrayList<>();
     
-    // calcular el total
     public void calculateTotal() {
         this.total = items.stream()
                 .map(OrderItem::getSubtotal)

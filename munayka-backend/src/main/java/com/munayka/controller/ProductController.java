@@ -15,20 +15,16 @@ import java.util.Optional;
 @RequestMapping("/api/products")
 @CrossOrigin(origins = "http://localhost:4200")
 public class ProductController {
+    @Autowired private ProductService productService;
     
-    @Autowired
-    private ProductService productService;
-
     @GetMapping
-    public List<Product> getAll() {
-        return productService.getAll();
-    }
+    public List<Product> getAll() { return productService.getAll(); }
     
     @GetMapping("/{id}")
     public ResponseEntity<Product> getById(@PathVariable Long id) {
-        Optional<Product> product = productService.getById(id);
-        return product.map(ResponseEntity::ok)
-                      .orElse(ResponseEntity.notFound().build());
+        return productService.getById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
     
     @GetMapping("/category/{category}")
@@ -37,9 +33,7 @@ public class ProductController {
     }
     
     @GetMapping("/available")
-    public List<Product> getAvailable() {
-        return productService.getAvailable();
-    }
+    public List<Product> getAvailable() { return productService.getAvailable(); }
     
     @GetMapping("/search")
     public List<Product> searchByName(@RequestParam String name) {
@@ -47,15 +41,8 @@ public class ProductController {
     }
     
     @GetMapping("/price-range")
-    public List<Product> searchByPriceRange(
-            @RequestParam BigDecimal min, 
-            @RequestParam BigDecimal max) {
+    public List<Product> searchByPriceRange(@RequestParam BigDecimal min, @RequestParam BigDecimal max) {
         return productService.findByPriceRange(min, max);
-    }
-    
-    @GetMapping("/category/{category}/available")
-    public List<Product> getByCategoryWithStock(@PathVariable Category category) {
-        return productService.findByCategoryWithStock(category);
     }
     
     @PostMapping
@@ -64,10 +51,7 @@ public class ProductController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(
-            @PathVariable Long id, 
-            @RequestBody Product productDetails) {
-        
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
         Optional<Product> productOpt = productService.getById(id);
         if (productOpt.isPresent()) {
             Product product = productOpt.get();
@@ -77,9 +61,7 @@ public class ProductController {
             product.setStock(productDetails.getStock());
             product.setImageUrl(productDetails.getImageUrl());
             product.setCategory(productDetails.getCategory());
-            
-            Product updatedProduct = productService.save(product);
-            return ResponseEntity.ok(updatedProduct);
+            return ResponseEntity.ok(productService.save(product));
         }
         return ResponseEntity.notFound().build();
     }
@@ -91,9 +73,7 @@ public class ProductController {
     }
     
     @PatchMapping("/{id}/stock")
-    public ResponseEntity<Product> updateStock(
-            @PathVariable Long id, 
-            @RequestParam Integer stock) {
+    public ResponseEntity<Product> updateStock(@PathVariable Long id, @RequestParam Integer stock) {
         try {
             Product product = productService.updateStock(id, stock);
             return ResponseEntity.ok(product);

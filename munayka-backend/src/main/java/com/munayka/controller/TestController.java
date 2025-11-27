@@ -7,32 +7,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TestController {
+    @Autowired private JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
+    @GetMapping("/test")
+    public String test() {
+        return "🚀 MUNAYKA Backend funcionando correctamente!";
+    }
+    
     @GetMapping("/test-db")
     public String testDatabase() {
         try {
             jdbcTemplate.execute("SELECT 1");
-            return "✅ CONNECTION SUCCESSFUL - MySQL MUNAYKA working!";
+            return "✅ Conexión a MySQL exitosa!";
         } catch (Exception e) {
-            return "❌ CONNECTION ERROR: " + e.getMessage();
-        }
-    }
-
-    @GetMapping("/test")
-    public String test() {
-        return "🚀 MUNAYKA Backend active - Ready to develop!";
-    }
-    
-    @GetMapping("/test-products")
-    public String testProducts() {
-        try {
-            jdbcTemplate.execute("SELECT COUNT(*) FROM productos");
-            return "✅ PRODUCTS TABLE EXISTS - Ready for products API!";
-        } catch (Exception e) {
-            return "❌ PRODUCTS TABLE ERROR: " + e.getMessage();
+            return "❌ Error de conexión: " + e.getMessage();
         }
     }
 }

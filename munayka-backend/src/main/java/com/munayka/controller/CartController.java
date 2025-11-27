@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/carts")
 @CrossOrigin(origins = "http://localhost:4200")
 public class CartController {
-    
-    @Autowired
-    private CartService cartService;
+    @Autowired private CartService cartService;
     
     @GetMapping("/user/{userId}")
     public ResponseEntity<Cart> getCartByUser(@PathVariable Long userId) {
@@ -25,10 +23,7 @@ public class CartController {
     }
     
     @PostMapping("/user/{userId}/add")
-    public ResponseEntity<Cart> addToCart(
-            @PathVariable Long userId,
-            @RequestParam Long productId,
-            @RequestParam Integer quantity) {
+    public ResponseEntity<Cart> addToCart(@PathVariable Long userId, @RequestParam Long productId, @RequestParam Integer quantity) {
         try {
             Cart cart = cartService.addToCart(userId, productId, quantity);
             return ResponseEntity.ok(cart);
@@ -38,10 +33,7 @@ public class CartController {
     }
     
     @PutMapping("/user/{userId}/update")
-    public ResponseEntity<Cart> updateCartItem(
-            @PathVariable Long userId,
-            @RequestParam Long productId,
-            @RequestParam Integer quantity) {
+    public ResponseEntity<Cart> updateCartItem(@PathVariable Long userId, @RequestParam Long productId, @RequestParam Integer quantity) {
         try {
             Cart cart = cartService.updateCartItem(userId, productId, quantity);
             return ResponseEntity.ok(cart);
@@ -51,9 +43,7 @@ public class CartController {
     }
     
     @DeleteMapping("/user/{userId}/remove")
-    public ResponseEntity<Cart> removeFromCart(
-            @PathVariable Long userId,
-            @RequestParam Long productId) {
+    public ResponseEntity<Cart> removeFromCart(@PathVariable Long userId, @RequestParam Long productId) {
         try {
             Cart cart = cartService.removeFromCart(userId, productId);
             return ResponseEntity.ok(cart);

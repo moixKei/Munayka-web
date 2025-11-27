@@ -6,7 +6,6 @@ import com.munayka.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -14,20 +13,16 @@ import java.util.Optional;
 @RequestMapping("/api/orders")
 @CrossOrigin(origins = "http://localhost:4200")
 public class OrderController {
-    
-    @Autowired
-    private OrderService orderService;
+    @Autowired private OrderService orderService;
     
     @GetMapping
-    public List<Order> getAllOrders() {
-        return orderService.getAllOrders();
-    }
+    public List<Order> getAllOrders() { return orderService.getAllOrders(); }
     
     @GetMapping("/{id}")
     public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
-        Optional<Order> order = orderService.getOrderById(id);
-        return order.map(ResponseEntity::ok)
-                   .orElse(ResponseEntity.notFound().build());
+        return orderService.getOrderById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
     
     @GetMapping("/user/{userId}")
@@ -41,11 +36,9 @@ public class OrderController {
     }
     
     @PostMapping("/checkout")
-    public ResponseEntity<Order> createOrderFromCart(
-            @RequestParam Long userId,
-            @RequestParam String shippingAddress,
-            @RequestParam(required = false) String phone,
-            @RequestParam(required = false) String email) {
+    public ResponseEntity<Order> createOrderFromCart(@RequestParam Long userId, @RequestParam String shippingAddress, 
+                                                   @RequestParam(required = false) String phone, 
+                                                   @RequestParam(required = false) String email) {
         try {
             Order order = orderService.createOrderFromCart(userId, shippingAddress, phone, email);
             return ResponseEntity.ok(order);
@@ -55,9 +48,7 @@ public class OrderController {
     }
     
     @PutMapping("/{id}/status")
-    public ResponseEntity<Order> updateOrderStatus(
-            @PathVariable Long id,
-            @RequestParam OrderStatus status) {
+    public ResponseEntity<Order> updateOrderStatus(@PathVariable Long id, @RequestParam OrderStatus status) {
         try {
             Order order = orderService.updateOrderStatus(id, status);
             return ResponseEntity.ok(order);
@@ -74,11 +65,5 @@ public class OrderController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
         }
-    }
-    
-    @GetMapping("/statistics")
-    public ResponseEntity<OrderService.OrderStatistics> getOrderStatistics() {
-        OrderService.OrderStatistics stats = orderService.getOrderStatistics();
-        return ResponseEntity.ok(stats);
     }
 }

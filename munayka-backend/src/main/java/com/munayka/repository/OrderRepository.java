@@ -7,25 +7,19 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    
-    // Buscar órdenes por usuario
     List<Order> findByUserOrderByOrderDateDesc(User user);
-    
-    // Buscar órdenes por estado
     List<Order> findByStatusOrderByOrderDateDesc(OrderStatus status);
-    
-    // Buscar órdenes por usuario y estado
     List<Order> findByUserAndStatusOrderByOrderDateDesc(User user, OrderStatus status);
-    
-    // Consulta personalizada para órdenes recientes
-    @Query("SELECT o FROM Order o WHERE o.orderDate >= :sinceDate ORDER BY o.orderDate DESC")
-    List<Order> findRecentOrders(@Param("sinceDate") java.time.LocalDateTime sinceDate);
-    
-    // Contar órdenes por estado
     long countByStatus(OrderStatus status);
+    
+    @Query("SELECT o FROM Order o JOIN FETCH o.user JOIN FETCH o.items i JOIN FETCH i.product WHERE o.id = :id")
+    Optional<Order> findByIdWithDetails(@Param("id") Long id);
+    
+    @Query("SELECT DISTINCT o FROM Order o JOIN FETCH o.items i JOIN FETCH i.product WHERE o.user.id = :userId")
+    List<Order> findByUserWithItems(@Param("userId") Long userId);
 }

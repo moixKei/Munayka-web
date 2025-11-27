@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 @Table(name = "order_items")
 @Data
 public class OrderItem {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,9 +24,8 @@ public class OrderItem {
     private Integer quantity;
     
     @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal price; 
+    private BigDecimal price;
     
-    //calcular subtotal
     public BigDecimal getSubtotal() {
         return price.multiply(BigDecimal.valueOf(quantity));
     }

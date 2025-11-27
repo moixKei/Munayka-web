@@ -11,7 +11,6 @@ import java.util.List;
 @Table(name = "carts")
 @Data
 public class Cart {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,14 +28,12 @@ public class Cart {
     @Column(name = "updated_date")
     private LocalDateTime updatedDate;
     
-    // Método para calcular el total
     public BigDecimal getTotal() {
         return items.stream()
                 .map(CartItem::getSubtotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
     
-    // Método para obtener la cantidad total de items
     public Integer getTotalItems() {
         return items.stream()
                 .mapToInt(CartItem::getQuantity)

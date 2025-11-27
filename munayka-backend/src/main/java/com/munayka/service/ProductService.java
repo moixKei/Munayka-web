@@ -14,70 +14,36 @@ import java.util.Optional;
 @Service
 @Transactional
 public class ProductService {
+    @Autowired private ProductRepository productRepository;
     
-    @Autowired
-    private ProductRepository productRepository;
-    
-    // Obtener todos los productos
     @Transactional(readOnly = true)
-    public List<Product> getAll() {
-        return productRepository.findAll();
-    }
+    public List<Product> getAll() { return productRepository.findAll(); }
     
-    // Obtener producto por ID
     @Transactional(readOnly = true)
-    public Optional<Product> getById(Long id) {
-        return productRepository.findById(id);
-    }
+    public Optional<Product> getById(Long id) { return productRepository.findById(id); }
     
-    // Guardar producto (crear o actualizar)
-    public Product save(Product product) {
-        return productRepository.save(product);
-    }
+    public Product save(Product product) { return productRepository.save(product); }
     
-    // Eliminar producto
-    public void delete(Long id) {
-        productRepository.deleteById(id);
-    }
+    public void delete(Long id) { productRepository.deleteById(id); }
     
-    // Buscar por categoría
     @Transactional(readOnly = true)
-    public List<Product> getByCategory(Category category) {
-        return productRepository.findByCategory(category);
-    }
+    public List<Product> getByCategory(Category category) { return productRepository.findByCategory(category); }
     
-    // Buscar productos con stock disponible
     @Transactional(readOnly = true)
-    public List<Product> getAvailable() {
-        return productRepository.findByStockGreaterThan(0);
-    }
+    public List<Product> getAvailable() { return productRepository.findByStockGreaterThan(0); }
     
-    // Buscar por rango de precio
     @Transactional(readOnly = true)
-    public List<Product> findByPriceRange(BigDecimal priceMin, BigDecimal priceMax) {
-        return productRepository.findByPriceRange(priceMin, priceMax);
+    public List<Product> findByPriceRange(BigDecimal priceMin, BigDecimal priceMax) { 
+        return productRepository.findByPriceRange(priceMin, priceMax); 
     }
     
-    // Buscar por nombre
     @Transactional(readOnly = true)
-    public List<Product> findByName(String name) {
-        return productRepository.findByNameContaining(name);
-    }
+    public List<Product> findByName(String name) { return productRepository.findByNameContaining(name); }
     
-    // Buscar por categoría con stock disponible
-    @Transactional(readOnly = true)
-    public List<Product> findByCategoryWithStock(Category category) {
-        return productRepository.findByCategoryWithStock(category);
-    }
-    
-    // Actualizar stock
     public Product updateStock(Long id, Integer newStock) {
-        Optional<Product> productOpt = productRepository.findById(id);
-        if (productOpt.isPresent()) {
-            Product product = productOpt.get();
-            product.setStock(newStock);
-            return productRepository.save(product);
-        }
-        throw new RuntimeException("Product not found with ID: " + id);
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        product.setStock(newStock);
+        return productRepository.save(product);
     }
 }

@@ -7,7 +7,6 @@ import lombok.Data;
 @Table(name = "users")
 @Data
 public class User {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,7 +26,6 @@ public class User {
     @Column(length = 20)
     private String phone;
     
-    // Control de concurrencia
     @Version
     private Long version;
 }
