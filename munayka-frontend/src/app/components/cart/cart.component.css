@@ -1,0 +1,139 @@
+/* cart.component.css */
+.cart-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.empty-cart {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #f9f9f9;
+  border-radius: 10px;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.btn-shop {
+  display: inline-block;
+  background: #667eea;
+  color: white;
+  padding: 0.8rem 2rem;
+  border-radius: 25px;
+  text-decoration: none;
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+.btn-shop:hover {
+  background: #5a67d8;
+}
+
+/* Estilos para items del carrito */
+.cart-with-items {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  gap: 1rem;
+}
+
+.item-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.item-details {
+  flex: 1;
+}
+
+.item-price {
+  color: #667eea;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.item-quantity {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.item-quantity button {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.item-subtotal {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.btn-remove {
+  background: #ff4757;
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Resumen */
+.cart-summary {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 10px;
+  height: fit-content;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.summary-row.total {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #667eea;
+  border-bottom: none;
+}
+
+.btn-checkout {
+  width: 100%;
+  background: #48bb78;
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.btn-continue {
+  display: block;
+  text-align: center;
+  margin-top: 1rem;
+  color: #667eea;
+  text-decoration: none;
+}

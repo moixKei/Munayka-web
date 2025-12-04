@@ -1,0 +1,125 @@
+<!-- src/app/components/products/product-detail/product-detail.component.html -->
+<div class="product-detail-container">
+  
+  <!-- Estado de carga -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Cargando detalles del producto...</p>
+  </div>
+
+  <!-- Detalles del producto -->
+  <div *ngIf="!isLoading && product" class="product-detail">
+    
+    <!-- Navegación -->
+    <nav class="breadcrumb">
+      <a routerLink="/">Inicio</a> &gt;
+      <a routerLink="/products">Productos</a> &gt;
+      <span>{{ product.name }}</span>
+    </nav>
+
+    <div class="product-main">
+      
+      <!-- Galería de imágenes -->
+      <div class="product-gallery">
+        <div class="main-image">
+          <img 
+            [src]="product.imageUrl || 'https://via.placeholder.com/600x600/667eea/ffffff?text=Imagen+No+Disponible'" 
+            [alt]="product.name"
+            class="product-image"
+          >
+        </div>
+        <div class="badges">
+          <span class="category-badge" [style.background]="getCategoryColor(product.category)">
+            {{ getCategoryEmoji(product.category) }} {{ product.category }}
+          </span>
+          <span *ngIf="product.stock > 0" class="stock-badge in-stock">
+            ✅ {{ product.stock }} disponibles
+          </span>
+          <span *ngIf="product.stock <= 0" class="stock-badge out-of-stock">
+            ❌ Agotado
+          </span>
+        </div>
+      </div>
+
+      <!-- Información del producto -->
+      <div class="product-info">
+        <h1 class="product-title">{{ product.name }}</h1>
+        
+        <div class="product-price">
+          <span class="current-price">S/ {{ product.price | number:'1.2-2' }}</span>
+        </div>
+
+        <div class="product-description">
+          <h3>Descripción</h3>
+          <p>{{ product.description }}</p>
+        </div>
+
+        <!-- Selector de cantidad -->
+        <div class="quantity-selector">
+          <h3>Cantidad</h3>
+          <div class="quantity-controls">
+            <button (click)="decreaseQuantity()" [disabled]="quantity <= 1">-</button>
+            <span class="quantity-display">{{ quantity }}</span>
+            <button (click)="increaseQuantity()" [disabled]="quantity >= product.stock">+</button>
+            <span class="stock-info">{{ product.stock }} disponibles</span>
+          </div>
+        </div>
+
+        <!-- Acciones -->
+        <div class="product-actions">
+          <button 
+            (click)="addToCart()" 
+            class="btn-add-cart"
+            [disabled]="product.stock <= 0"
+            [class.disabled]="product.stock <= 0"
+          >
+            🛒 {{ product.stock > 0 ? 'Agregar al Carrito' : 'Agotado' }}
+          </button>
+          
+          <button class="btn-buy-now" [disabled]="product.stock <= 0">
+            💳 Comprar Ahora
+          </button>
+        </div>
+
+        <!-- Detalles adicionales -->
+        <div class="product-meta">
+          <div class="meta-item">
+            <span class="meta-label">📦 Envío:</span>
+            <span class="meta-value">Gratis en órdenes +S/300</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">🔄 Devoluciones:</span>
+            <span class="meta-value">30 días de garantía</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">💎 Material:</span>
+            <span class="meta-value">{{ getMaterialByCategory(product.category) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Productos relacionados -->
+    <div *ngIf="relatedProducts.length > 0" class="related-products">
+      <h2>Productos Relacionados</h2>
+      <div class="related-grid">
+        <div *ngFor="let related of relatedProducts" class="related-card">
+          <a [routerLink]="['/products', related.id]" class="related-link">
+            <img [src]="related.imageUrl" [alt]="related.name">
+            <h4>{{ related.name }}</h4>
+            <p class="related-price">S/ {{ related.price | number:'1.2-2' }}</p>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Mensaje si no se encuentra el producto -->
+  <div *ngIf="!isLoading && !product" class="not-found">
+    <h2>Producto no encontrado</h2>
+    <p>El producto que buscas no está disponible.</p>
+    <a routerLink="/products" class="btn-back">Ver Todos los Productos</a>
+  </div>
+
+</div>

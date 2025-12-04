@@ -1,0 +1,61 @@
+<!-- src/app/components/home/home.component.html -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>💎 Joyería Munayka</h1>
+    <p class="hero-subtitle">Elegancia, diseño y artesanía en cada pieza</p>
+    <a routerLink="/products" class="btn-hero">Ver Colección</a>
+  </div>
+  <div class="hero-image"></div>
+</section>
+
+<section class="features">
+  <h2 class="luxury-border">Por Qué Elegirnos</h2>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon">⭐</div>
+      <h3>Calidad Premium</h3>
+      <p>Materiales de la más alta calidad certificada</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🚚</div>
+      <h3>Envío Gratis</h3>
+      <p>En compras mayores a S/ 300 a nivel nacional</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔄</div>
+      <h3>Garantía</h3>
+      <p>30 días de garantía en todas nuestras joyas</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💎</div>
+      <h3>Certificación</h3>
+      <p>Todas nuestras piedras tienen certificado de autenticidad</p>
+    </div>
+  </div>
+</section>
+
+<section class="featured-products">
+  <h2 class="luxury-border">Productos Destacados</h2>
+  <div class="products-grid">
+    <div *ngFor="let product of featuredProducts" class="product-card-featured">
+      <div class="product-image">
+        {{ getCategoryEmoji(product.category) }}
+      </div>
+      <div class="product-info">
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.description }}</p>
+        <div class="product-price">S/ {{ product.price | number:'1.2-2' }}</div>
+        <a [routerLink]="['/products', product.id]" class="btn-view">Ver Detalles</a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Mensaje si no hay productos destacados -->
+  <div *ngIf="featuredProducts.length === 0" class="no-products">
+    <p>Cargando productos destacados...</p>
+  </div>
+  
+  <div style="text-align: center; margin-top: 3rem;">
+    <a routerLink="/products" class="btn-hero">Ver Todos los Productos</a>
+  </div>
+</section>

@@ -1,0 +1,28 @@
+<!-- product-list.component.html -->
+<div class="product-list-container">
+  <!-- Búsqueda CON ngModel -->
+  <div class="search-bar">
+    <input 
+      type="text" 
+      [(ngModel)]="searchTerm"
+      placeholder="Buscar joyas..."
+    >
+    <button (click)="searchProducts()">🔍 Buscar</button>
+  </div>
+  
+  <!-- Lista de productos -->
+  <div class="products-grid">
+    <div *ngFor="let product of products" class="product-card">
+      <img [src]="product.imageUrl" [alt]="product.name">
+      <h3>{{ product.name }}</h3>
+      <p>{{ product.description }}</p>
+      <p class="price">S/ {{ product.price }}</p>
+      <button (click)="addToCart(product)" class="btn-cart">
+        🛒 Agregar al Carrito
+      </button>
+      <a [routerLink]="['/products', product.id]" class="btn-details">
+  Ver Detalles
+</a>
+    </div>
+  </div>
+</div>
